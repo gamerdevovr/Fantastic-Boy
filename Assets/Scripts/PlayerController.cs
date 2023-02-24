@@ -73,22 +73,22 @@ public class PlayerController : MonoBehaviour
 
     private void PlayAnimations()
     {
-        //if (_mobileController.Horizontal() != 0 || _mobileController.Vertical() != 0)
-        //{
-        //    _animator.SetBool("Running", true);
-        //    _animator.SetBool("Idle", false);
-        //    _animator.SetBool("Jump", false);
-        //    if (_isJumping)
-        //        _animator.SetBool("Jump", true);
-        //}
-        //else
-        //{
-        //    _animator.SetBool("Idle", true);
-        //    _animator.SetBool("Running", false);
-        //    _animator.SetBool("Jump", false);
-        //    if (_isJumping)
-        //        _animator.SetBool("Jump", true);
-        //}
+        if (_mobileLeftMove.GetLeftMove() != 0 || _mobileRightMove.GetLeftMove() != 0)
+        {
+            _animator.SetBool("Running", true);
+            _animator.SetBool("Idle", false);
+            _animator.SetBool("Jump", false);
+            if (_isJumping)
+                _animator.SetBool("Jump", true);
+        }
+        else
+        {
+            _animator.SetBool("Idle", true);
+            _animator.SetBool("Running", false);
+            _animator.SetBool("Jump", false);
+            if (_isJumping)
+                _animator.SetBool("Jump", true);
+        }
     }
 
     private void OnDrawGizmos()
