@@ -34,10 +34,6 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         float horizontal = _mobileLeftMove.GetLeftMove() + _mobileRightMove.GetLeftMove();
-        //float horizontal = Input.GetAxis("Horizontal");
-
-
-
         Vector3 direction = new Vector3(horizontal, 0, 0);
 
         if (Vector3.Angle(Vector3.forward, direction) > 1f || Vector3.Angle(Vector3.forward, direction) == 0)
@@ -75,19 +71,34 @@ public class PlayerController : MonoBehaviour
     {
         if (_mobileLeftMove.GetLeftMove() != 0 || _mobileRightMove.GetLeftMove() != 0)
         {
-            _animator.SetBool("Running", true);
-            _animator.SetBool("Idle", false);
-            _animator.SetBool("Jump", false);
             if (_isJumping)
+            {
                 _animator.SetBool("Jump", true);
+                _animator.SetBool("Running", false);
+                _animator.SetBool("Idle", false);
+            }
+            else
+            {
+                _animator.SetBool("Running", true);
+                _animator.SetBool("Idle", false);
+                _animator.SetBool("Jump", false);
+            }
+
         }
         else
         {
-            _animator.SetBool("Idle", true);
-            _animator.SetBool("Running", false);
-            _animator.SetBool("Jump", false);
             if (_isJumping)
+            {
                 _animator.SetBool("Jump", true);
+                _animator.SetBool("Idle", false);
+                _animator.SetBool("Running", false);
+            }
+            else
+            {
+                _animator.SetBool("Idle", true);
+                _animator.SetBool("Running", false);
+                _animator.SetBool("Jump", false);
+            }
         }
     }
 
