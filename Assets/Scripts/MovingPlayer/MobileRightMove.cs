@@ -5,6 +5,26 @@ using UnityEngine.EventSystems;
 public class MobileRightMove : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 {
     private float _rightMove = 0f;
+    private Image _image;
+
+    private void Start()
+    {
+        _image = GetComponent<Image>();
+
+        #if UNITY_ANDROID
+            image.enabled = true;
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(true);
+            }
+        #else
+            _image.enabled = false;
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(false);
+            }
+        #endif
+    }
 
     public virtual void OnPointerDown(PointerEventData ped)
     {
@@ -16,7 +36,7 @@ public class MobileRightMove : MonoBehaviour, IPointerUpHandler, IPointerDownHan
         _rightMove = 0f;
     }
 
-    public float GetLeftMove()
+    public float GetRightMove()
     {
         if (_rightMove == 0f)
         {

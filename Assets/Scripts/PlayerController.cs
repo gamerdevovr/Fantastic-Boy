@@ -9,14 +9,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private MobileRightMove _mobileRightMove;
     [SerializeField] private MobileJump _mobileJump;
 
-    private Rigidbody _rb;
+    private Rigidbody _rigidbody;
     private Vector3 _normal;
     private Animator _animator;
     
 
     private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
     }
 
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        float horizontal = _mobileLeftMove.GetLeftMove() + _mobileRightMove.GetLeftMove();
+        float horizontal = _mobileLeftMove.GetLeftMove() + _mobileRightMove.GetRightMove();
         Vector3 direction = new Vector3(horizontal, 0, 0);
 
         if (Vector3.Angle(Vector3.forward, direction) > 1f || Vector3.Angle(Vector3.forward, direction) == 0)
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         Vector3 directionMove = direction.normalized - Vector3.Dot(direction.normalized, _normal) * _normal;
         Vector3 offset = directionMove * _runSpeed * Time.deltaTime;
 
-        _rb.MovePosition(_rb.position + offset);
+        _rigidbody.MovePosition(_rigidbody.position + offset);
     }
 
     private void Jump()
@@ -53,13 +53,14 @@ public class PlayerController : MonoBehaviour
         if (_mobileJump.Jump() && !_isJumping)
         {
             _isJumping = true;
-            _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+            _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _jumpForce, _rigidbody.velocity.z);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.tag.Equals("Not Collision"))
+        //if (!collision.gameObject.tag.Equals("Not Collision"))
+        if (Mathf.Abs(collision.contacts[0].normal.x) < 0.7f)
         {
             _normal = collision.contacts[0].normal;
         }
@@ -69,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayAnimations()
     {
-        if (_mobileLeftMove.GetLeftMove() != 0 || _mobileRightMove.GetLeftMove() != 0)
+        if (_mobileLeftMove.GetLeftMove() != 0 || _mobileRightMove.GetRightMove() != 0)
         {
             if (_isJumping)
             {

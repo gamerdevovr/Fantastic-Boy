@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Water
   - Not Collision
+  - Wall
   layers:
   - Default
   - TransparentFX
