@@ -8,11 +8,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private MobileLeftMove _mobileLeftMove;
     [SerializeField] private MobileRightMove _mobileRightMove;
     [SerializeField] private MobileJump _mobileJump;
+    [SerializeField] private MobileSlidingMove _mobileSliding;
 
     private Rigidbody _rigidbody;
     private Vector3 _normal;
     private Animator _animator;
-    
+    private float _horizontal;
+
+
 
     private void Start()
     {
@@ -33,8 +36,8 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        float horizontal = _mobileLeftMove.GetLeftMove() + _mobileRightMove.GetRightMove();
-        Vector3 direction = new Vector3(horizontal, 0, 0);
+        _horizontal = _mobileLeftMove.GetLeftMove() + _mobileRightMove.GetRightMove();
+        Vector3 direction = new Vector3(_horizontal, 0, 0);
 
         if (Vector3.Angle(Vector3.forward, direction) > 1f || Vector3.Angle(Vector3.forward, direction) == 0)
         {
@@ -70,38 +73,59 @@ public class PlayerController : MonoBehaviour
 
     private void PlayAnimations()
     {
-        if (_mobileLeftMove.GetLeftMove() != 0 || _mobileRightMove.GetRightMove() != 0)
+        if (_mobileSliding.Sliding())
+        {
+            Debug.Log("Sliding");
+            ActiveAnimation("Sliding");
+        }
+
+
+        if (_horizontal != 0)
         {
             if (_isJumping)
             {
-                _animator.SetBool("Jump", true);
-                _animator.SetBool("Running", false);
-                _animator.SetBool("Idle", false);
+                ActiveAnimation("Jump");
             }
             else
             {
-                _animator.SetBool("Running", true);
-                _animator.SetBool("Idle", false);
-                _animator.SetBool("Jump", false);
+                ActiveAnimation("Running");
             }
 
+            if (_mobileSliding.Sliding())
+            {
+                Debug.Log("Sliding");
+                ActiveAnimation("Sliding");
+            }
         }
         else
         {
             if (_isJumping)
             {
-                _animator.SetBool("Jump", true);
-                _animator.SetBool("Idle", false);
-                _animator.SetBool("Running", false);
+                ActiveAnimation("Jump");
             }
             else
             {
-                _animator.SetBool("Idle", true);
-                _animator.SetBool("Running", false);
-                _animator.SetBool("Jump", false);
+                ActiveAnimation("Idle");
             }
         }
     }
+
+
+    private void ActiveAnimation(string activAnimation)
+    {
+        for (int i = 0; i < _animator.parameterCount; i++)
+        {
+            if (activAnimation.Equals(_animator.GetParameter(i).name))
+            {
+                _animator.SetBool(_animator.GetParameter(i).name, true);
+            }
+            else 
+            {
+                _animator.SetBool(_animator.GetParameter(i).name, false);
+            }
+        }
+    }
+
 
     private void OnDrawGizmos()
     {
