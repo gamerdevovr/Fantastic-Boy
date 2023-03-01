@@ -18,11 +18,4 @@ public class MoveCamera : MonoBehaviour
 
         transform.position = Vector3.Lerp(transform.position, newCamPosition, _moveSpeed);
     }
-
-    //public GameObject target;
-
-    //void LateUpdate()
-    //{
-    //    transform.LookAt(target.transform);
-    //}
 }
