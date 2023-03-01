@@ -9,21 +9,21 @@ public class MobileSlidingMove : MonoBehaviour, IPointerUpHandler, IPointerDownH
 
     private void Start()
     {
-        //_image = GetComponent<Image>();
+        _image = GetComponent<Image>();
 
-        //#if UNITY_ANDROID
-        //    image.enabled = true;
-        //    foreach (Transform child in transform)
-        //    {
-        //        child.gameObject.SetActive(true);
-        //    }
-        //#else
-        //    _image.enabled = false;
-        //    foreach (Transform child in transform)
-        //    {
-        //        child.gameObject.SetActive(false);
-        //    }
-        //#endif
+        #if UNITY_ANDROID
+            image.enabled = true;
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(true);
+            }
+        #else
+            _image.enabled = false;
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(false);
+            }
+         #endif
     }
 
     public virtual void OnPointerDown(PointerEventData ped)
@@ -38,6 +38,6 @@ public class MobileSlidingMove : MonoBehaviour, IPointerUpHandler, IPointerDownH
 
     public bool Sliding()
     {
-        return _slidingState;
+        return Input.GetKey(KeyCode.LeftShift) || _slidingState;
     }
 }

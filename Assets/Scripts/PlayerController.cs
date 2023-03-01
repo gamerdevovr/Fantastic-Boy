@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //if (!collision.gameObject.tag.Equals("Not Collision"))
         if (Mathf.Abs(collision.contacts[0].normal.x) < 0.7f)
         {
             _normal = collision.contacts[0].normal;
@@ -75,33 +74,26 @@ public class PlayerController : MonoBehaviour
     {
         if (_mobileSliding.Sliding())
         {
-            Debug.Log("Sliding");
+            Debug.Log(_mobileSliding.Sliding());
             ActiveAnimation("Sliding");
         }
-
 
         if (_horizontal != 0)
         {
             if (_isJumping)
             {
-                ActiveAnimation("Jump");
+                ActiveAnimation("Jumping");
             }
             else
             {
                 ActiveAnimation("Running");
-            }
-
-            if (_mobileSliding.Sliding())
-            {
-                Debug.Log("Sliding");
-                ActiveAnimation("Sliding");
             }
         }
         else
         {
             if (_isJumping)
             {
-                ActiveAnimation("Jump");
+                ActiveAnimation("JumpingFromIdle");
             }
             else
             {
