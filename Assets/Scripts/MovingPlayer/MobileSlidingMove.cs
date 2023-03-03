@@ -23,7 +23,7 @@ public class MobileSlidingMove : MonoBehaviour, IPointerUpHandler, IPointerDownH
             {
                 child.gameObject.SetActive(false);
             }
-         #endif
+        #endif
     }
 
     public virtual void OnPointerDown(PointerEventData ped)

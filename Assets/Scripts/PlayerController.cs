@@ -48,7 +48,11 @@ public class PlayerController : MonoBehaviour
         Vector3 directionMove = direction.normalized - Vector3.Dot(direction.normalized, _normal) * _normal;
         Vector3 offset = directionMove * _runSpeed * Time.deltaTime;
 
-        _rigidbody.MovePosition(_rigidbody.position + offset);
+        if (!_mobileSliding.Sliding())
+        {
+            _rigidbody.MovePosition(_rigidbody.position + offset);
+            Debug.Log("Moving");
+        }
     }
 
     private void Jump()
@@ -77,8 +81,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log(_mobileSliding.Sliding());
             ActiveAnimation("Sliding");
         }
-
-        if (_horizontal != 0)
+        else if (_horizontal != 0)
         {
             if (_isJumping)
             {
